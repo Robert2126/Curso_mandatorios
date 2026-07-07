@@ -1,0 +1,341 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Difficulty {
+  BASICA
+  MEDIA
+  ALTA
+}
+
+enum ResourceType {
+  VIDEO
+  INFOGRAFIA
+  MAPA_CONCEPTUAL
+  TEXTO_INTERACTIVO
+  ENLACE
+  IMAGEN
+}
+
+enum AttemptStatus {
+  INICIADO
+  FINALIZADO
+  VENCIDO
+  ANULADO
+}
+
+model User {
+  id              String          @id @default(cuid())
+  cedula          String          @unique
+  name            String
+  email           String?
+  passwordHash    String
+  gradeReference  String?
+  active          Boolean         @default(true)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  lastAccessAt    DateTime?
+
+  roles           UserRole[]
+  attempts        MockExamAttempt[]
+  progress        UserProgress[]
+  studySessions   StudySession[]
+  notes           PersonalNote[]
+
+  @@map("usuarios")
+}
+
+model Role {
+  id          Int        @id @default(autoincrement())
+  name        String     @unique
+  description String?
+  users       UserRole[]
+
+  @@map("roles")
+}
+
+model UserRole {
+  id      Int    @id @default(autoincrement())
+  userId  String
+  roleId  Int
+
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role    Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@map("usuario_roles")
+}
+
+model Cycle {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  order       Int      @default(0)
+  active      Boolean  @default(true)
+
+  courses     Course[]
+
+  @@map("ciclos")
+}
+
+model Course {
+  id                   Int            @id @default(autoincrement())
+  cycleId              Int
+  name                 String
+  description          String?
+  estimatedDurationMin Int?
+  coverImage           String?
+  order                Int            @default(0)
+  active               Boolean        @default(true)
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+
+  cycle                Cycle          @relation(fields: [cycleId], references: [id], onDelete: Cascade)
+  topics               Topic[]
+  resources            Resource[]
+  appliedExamples      AppliedExample[]
+  questions            Question[]
+  mockExams            MockExam[]
+  progress             UserProgress[]
+  studySessions        StudySession[]
+  notes                PersonalNote[]
+
+  @@map("cursos")
+}
+
+model Topic {
+  id                   Int              @id @default(autoincrement())
+  courseId             Int
+  title                String
+  objective            String?
+  activation           String?
+  summary              String?
+  contentHtml          String?
+  order                Int              @default(0)
+  estimatedDurationMin Int?
+  active               Boolean          @default(true)
+
+  course               Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  resources            Resource[]
+  appliedExamples      AppliedExample[]
+  questions            Question[]
+  progress             UserProgress[]
+  studySessions        StudySession[]
+  notes                PersonalNote[]
+
+  @@map("temas")
+}
+
+model Resource {
+  id              Int          @id @default(autoincrement())
+  courseId        Int?
+  topicId         Int?
+  type            ResourceType
+  title           String
+  description     String?
+  url             String?
+  embeddedContent String?
+  downloadable    Boolean      @default(false)
+  order           Int          @default(0)
+  active          Boolean      @default(true)
+
+  course          Course?      @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  topic           Topic?       @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@map("recursos")
+}
+
+model AppliedExample {
+  id               Int      @id @default(autoincrement())
+  courseId         Int
+  topicId          Int
+  title            String
+  situation        String
+  analysis         String
+  expectedDecision String
+  keyLearning      String
+  reflectionPrompt String?
+  active           Boolean  @default(true)
+
+  course           Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  topic            Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@map("ejemplos_aplicados")
+}
+
+model Question {
+  id                 Int              @id @default(autoincrement())
+  courseId           Int
+  topicId            Int?
+  statement          String
+  difficulty         Difficulty       @default(MEDIA)
+  generalFeedback    String?
+  active             Boolean          @default(true)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  course             Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  topic              Topic?           @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  options            AnswerOption[]
+  practiceAnswers    PracticeAnswer[]
+  mockExamAnswers    MockExamAnswer[]
+
+  @@map("preguntas")
+}
+
+model AnswerOption {
+  id            Int      @id @default(autoincrement())
+  questionId    Int
+  text          String
+  isCorrect     Boolean  @default(false)
+  feedback      String?
+  order         Int      @default(0)
+
+  question      Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  practiceAnswers PracticeAnswer[]
+  mockExamAnswers MockExamAnswer[]
+
+  @@map("opciones_respuesta")
+}
+
+model PracticeSession {
+  id          Int              @id @default(autoincrement())
+  userId      String
+  courseId    Int?
+  topicId     Int?
+  startedAt   DateTime         @default(now())
+  finishedAt  DateTime?
+
+  answers     PracticeAnswer[]
+
+  @@map("practicas")
+}
+
+model PracticeAnswer {
+  id                Int             @id @default(autoincrement())
+  practiceSessionId Int
+  questionId        Int
+  optionId          Int?
+  isCorrect         Boolean?
+  answeredAt        DateTime        @default(now())
+
+  practiceSession   PracticeSession @relation(fields: [practiceSessionId], references: [id], onDelete: Cascade)
+  question          Question        @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  option            AnswerOption?   @relation(fields: [optionId], references: [id], onDelete: SetNull)
+
+  @@map("respuestas_practica")
+}
+
+model MockExam {
+  id                 Int               @id @default(autoincrement())
+  courseId           Int
+  name               String
+  description        String?
+  numberOfQuestions  Int
+  timeLimitMin       Int
+  approvalPercentage Decimal           @default(70)
+  gradeScale         String            @default("100")
+  allowedAttempts    Int               @default(1)
+  active             Boolean           @default(true)
+
+  course             Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  attempts           MockExamAttempt[]
+
+  @@map("simulacros")
+}
+
+model MockExamAttempt {
+  id             Int              @id @default(autoincrement())
+  mockExamId     Int
+  userId         String
+  startedAt      DateTime         @default(now())
+  finishedAt     DateTime?
+  timeUsedSec    Int?
+  totalQuestions Int              @default(0)
+  correct        Int              @default(0)
+  incorrect      Int              @default(0)
+  score100       Decimal?
+  score5         Decimal?
+  approved       Boolean?
+  status         AttemptStatus    @default(INICIADO)
+
+  mockExam       MockExam         @relation(fields: [mockExamId], references: [id], onDelete: Cascade)
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  answers        MockExamAnswer[]
+
+  @@unique([userId, mockExamId])
+  @@map("intentos_simulacro")
+}
+
+model MockExamAnswer {
+  id           Int             @id @default(autoincrement())
+  attemptId    Int
+  questionId   Int
+  optionId     Int?
+  isCorrect    Boolean?
+  questionOrder Int?
+  answered     Boolean         @default(false)
+
+  attempt      MockExamAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question     Question        @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  option       AnswerOption?   @relation(fields: [optionId], references: [id], onDelete: SetNull)
+
+  @@map("respuestas_simulacro")
+}
+
+model UserProgress {
+  id                 Int       @id @default(autoincrement())
+  userId             String
+  courseId           Int
+  topicId            Int?
+  progressPercentage Decimal   @default(0)
+  completed          Boolean   @default(false)
+  startedAt          DateTime  @default(now())
+  completedAt        DateTime?
+  lastAccessAt       DateTime  @default(now())
+
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course             Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  topic              Topic?    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId, topicId])
+  @@map("avance_usuario")
+}
+
+model StudySession {
+  id          Int      @id @default(autoincrement())
+  userId      String
+  courseId    Int?
+  topicId     Int?
+  startedAt   DateTime @default(now())
+  finishedAt  DateTime?
+  durationSec Int?
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course      Course?  @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  topic       Topic?   @relation(fields: [topicId], references: [id], onDelete: SetNull)
+
+  @@map("sesiones_estudio")
+}
+
+model PersonalNote {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  courseId  Int?
+  topicId   Int?
+  title     String?
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course    Course?  @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  topic     Topic?   @relation(fields: [topicId], references: [id], onDelete: SetNull)
+
+  @@map("notas_personales")
+}
