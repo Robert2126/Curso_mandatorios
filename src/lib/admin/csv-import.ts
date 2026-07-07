@@ -80,7 +80,7 @@ export async function importQuestionsFromCsv(formData: FormData) {
   const file = formData.get("file");
 
   if (!(file instanceof File)) {
-    return;
+    return { imported: 0 };
   }
 
   const text = await file.text();
@@ -131,4 +131,6 @@ export async function importQuestionsFromCsv(formData: FormData) {
 
   revalidatePath("/admin/importar");
   revalidatePath("/admin/preguntas");
+
+  return { imported };
 }
