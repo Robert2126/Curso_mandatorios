@@ -1,0 +1,48 @@
+{
+  "cursos": [
+    {
+      "id": 1,
+      "nombre": "Induccion institucional obligatoria",
+      "descripcion": "Curso inicial para reforzar lineamientos institucionales y responsabilidades basicas.",
+      "duracionHoras": 8,
+      "vigenciaMeses": 12,
+      "obligatorio": true
+    },
+    {
+      "id": 2,
+      "nombre": "Seguridad y salud en el trabajo",
+      "descripcion": "Curso obligatorio sobre prevencion, autocuidado y gestion basica de riesgos laborales.",
+      "duracionHoras": 20,
+      "vigenciaMeses": 12,
+      "obligatorio": true
+    },
+    {
+      "id": 3,
+      "nombre": "Proteccion de datos personales",
+      "descripcion": "Curso sobre tratamiento adecuado de informacion personal y deberes de confidencialidad.",
+      "duracionHoras": 10,
+      "vigenciaMeses": 24,
+      "obligatorio": true
+    }
+  ],
+  "usuarios": [
+    {
+      "id": 1,
+      "nombre": "Usuario de prueba",
+      "identificacion": "1000000000",
+      "dependencia": "Talento Humano",
+      "cargo": "Analista"
+    }
+  ],
+  "asignaciones": [
+    {
+      "id": 1,
+      "usuarioId": 1,
+      "cursoId": 1,
+      "fechaAsignacion": "2026-07-07",
+      "fechaLimite": "2026-08-07",
+      "fechaFinalizacion": null,
+      "estado": "pendiente"
+    }
+  ]
+}
