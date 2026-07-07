@@ -1,5 +1,6 @@
 import { AppShell } from "@/components/layout/app-shell";
 import { ModuleCard } from "@/components/ui/module-card";
+import { requireAdminSession } from "@/lib/auth/require-session";
 
 const adminModules = [
   { title: "Ciclos", description: "Gestion de ciclos disponibles en la plataforma.", href: "/admin/ciclos" },
@@ -10,7 +11,9 @@ const adminModules = [
   { title: "Reportes", description: "Control de exportaciones y registros generados.", href: "/admin/reportes" },
 ];
 
-export default function AdminPage() {
+export default async function AdminPage() {
+  await requireAdminSession();
+
   return (
     <AppShell>
       <section className="space-y-6">
