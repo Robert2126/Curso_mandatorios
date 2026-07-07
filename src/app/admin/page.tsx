@@ -6,9 +6,9 @@ const adminModules = [
   { title: "Ciclos", description: "Gestion de ciclos disponibles en la plataforma.", href: "/admin/ciclos" },
   { title: "Cursos", description: "Creacion y edicion de cursos mandatorios.", href: "/admin/cursos" },
   { title: "Temas", description: "Organizacion de temas, objetivos y microlecciones.", href: "/admin/temas" },
+  { title: "Recursos", description: "Carga posterior de videos, infografias y mapas conceptuales.", href: "/admin/recursos" },
   { title: "Preguntas", description: "Gestion del banco de preguntas y respuestas.", href: "/admin/preguntas" },
   { title: "Simulacros", description: "Configuracion de intentos, tiempo y aprobacion.", href: "/admin/simulacros" },
-  { title: "Reportes", description: "Control de exportaciones y registros generados.", href: "/admin/reportes" },
 ];
 
 export default async function AdminPage() {
