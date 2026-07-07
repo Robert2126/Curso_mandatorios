@@ -9,6 +9,7 @@ const adminModules = [
   { title: "Recursos", description: "Carga posterior de videos, infografias y mapas conceptuales.", href: "/admin/recursos" },
   { title: "Preguntas", description: "Gestion del banco de preguntas y respuestas.", href: "/admin/preguntas" },
   { title: "Simulacros", description: "Configuracion de intentos, tiempo y aprobacion.", href: "/admin/simulacros" },
+  { title: "Importar", description: "Carga masiva de preguntas y opciones desde archivo CSV.", href: "/admin/importar" },
 ];
 
 export default async function AdminPage() {
@@ -21,7 +22,7 @@ export default async function AdminPage() {
           <p className="text-sm uppercase tracking-[0.2em] text-secondary">Administracion</p>
           <h1 className="mt-2 text-3xl font-bold text-primary">Panel administrativo</h1>
           <p className="mt-3 max-w-3xl text-slate-500">
-            Vista inicial para cargar ciclos, cursos, temas, recursos, preguntas y simulacros.
+            Vista inicial para cargar ciclos, cursos, temas, recursos, preguntas, simulacros e importaciones.
           </p>
         </div>
 
