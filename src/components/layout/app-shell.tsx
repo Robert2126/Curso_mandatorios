@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { mainNavigation } from "@/lib/navigation";
-import { getCurrentSession } from "@/lib/auth/session";
+import { requireSession } from "@/lib/auth/require-session";
 
 type AppShellProps = {
   children: React.ReactNode;
 };
 
 export async function AppShell({ children }: AppShellProps) {
-  const session = await getCurrentSession();
+  const session = await requireSession();
 
   return (
     <div className="min-h-screen bg-surface text-slate-900">
@@ -31,16 +31,14 @@ export async function AppShell({ children }: AppShellProps) {
               ))}
             </nav>
 
-            {session ? (
-              <div className="flex items-center gap-3 text-xs text-white/80">
-                <span>{session.name}</span>
-                <form action="/api/auth/logout" method="post">
-                  <button className="rounded-full border border-white/30 px-3 py-1 text-white transition hover:bg-white/10" type="submit">
-                    Cerrar sesion
-                  </button>
-                </form>
-              </div>
-            ) : null}
+            <div className="flex items-center gap-3 text-xs text-white/80">
+              <span>{session.name}</span>
+              <form action="/api/auth/logout" method="post">
+                <button className="rounded-full border border-white/30 px-3 py-1 text-white transition hover:bg-white/10" type="submit">
+                  Cerrar sesion
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </header>
