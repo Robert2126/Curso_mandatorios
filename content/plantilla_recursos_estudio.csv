@@ -1,0 +1,3 @@
+courseId,topicId,type,title,description,reference,internalNote,order
+1,1,TEXTO_INTERACTIVO,"Resumen del tema","Resumen breve para estudio autonomo","Referencia interna o enlace autorizado","Pendiente ajustar con material oficial",1
+1,1,INFOGRAFIA,"Mapa visual del tema","Apoyo grafico para recordar conceptos clave","Referencia interna o enlace autorizado","Pendiente cargar cuando se suministre material",2
