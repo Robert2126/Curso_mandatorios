@@ -1,5 +1,6 @@
 "use server";
 
+import { ResourceType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { requireAdminSession } from "@/lib/auth/require-session";
 import { prisma } from "@/lib/prisma";
@@ -141,4 +142,43 @@ export async function createMockExam(formData: FormData) {
   });
 
   revalidatePath("/admin/simulacros");
+}
+
+export async function createResource(formData: FormData) {
+  await requireAdminSession();
+
+  const courseId = getNumber(formData, "courseId") || null;
+  const topicId = getNumber(formData, "topicId") || null;
+  const typeValue = getString(formData, "type");
+  const title = getString(formData, "title");
+  const description = getString(formData, "description");
+  const url = getString(formData, "url");
+  const embeddedContent = getString(formData, "embeddedContent");
+  const order = getNumber(formData, "order");
+
+  if (!title || !Object.values(ResourceType).includes(typeValue as ResourceType)) {
+    return;
+  }
+
+  if (!courseId && !topicId) {
+    return;
+  }
+
+  await prisma.resource.create({
+    data: {
+      courseId,
+      topicId,
+      type: typeValue as ResourceType,
+      title,
+      description: description || null,
+      url: url || null,
+      embeddedContent: embeddedContent || null,
+      downloadable: false,
+      order,
+      active: true,
+    },
+  });
+
+  revalidatePath("/admin/recursos");
+  revalidatePath("/cursos");
 }
