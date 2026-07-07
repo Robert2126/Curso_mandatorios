@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Curso Mandatorios</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">Sistema de control</p>
+      <h1>Curso Mandatorios</h1>
+      <p class="header-text">Gestion de cursos obligatorios, cumplimiento, vencimientos y alertas preventivas.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="dashboard" aria-label="Indicadores generales">
+      <article class="card">
+        <span class="card-label">Usuarios</span>
+        <strong id="totalUsuarios">0</strong>
+      </article>
+      <article class="card">
+        <span class="card-label">Cursos</span>
+        <strong id="totalCursos">0</strong>
+      </article>
+      <article class="card">
+        <span class="card-label">Asignaciones</span>
+        <strong id="totalAsignaciones">0</strong>
+      </article>
+      <article class="card alert-card">
+        <span class="card-label">Vencidos</span>
+        <strong id="totalVencidos">0</strong>
+      </article>
+    </section>
+
+    <section class="grid-layout">
+      <article class="panel">
+        <h2>Registrar usuario</h2>
+        <form id="formUsuario" class="form">
+          <label>
+            Nombre completo
+            <input type="text" id="nombreUsuario" placeholder="Ej. Juan Perez" required />
+          </label>
+          <label>
+            Identificacion
+            <input type="text" id="identificacionUsuario" placeholder="Ej. 123456789" required />
+          </label>
+          <label>
+            Dependencia
+            <input type="text" id="dependenciaUsuario" placeholder="Ej. Talento Humano" required />
+          </label>
+          <label>
+            Cargo
+            <input type="text" id="cargoUsuario" placeholder="Ej. Analista" required />
+          </label>
+          <button type="submit">Guardar usuario</button>
+        </form>
+      </article>
+
+      <article class="panel">
+        <h2>Registrar curso</h2>
+        <form id="formCurso" class="form">
+          <label>
+            Nombre del curso
+            <input type="text" id="nombreCurso" placeholder="Ej. Seguridad digital" required />
+          </label>
+          <label>
+            Duracion en horas
+            <input type="number" id="duracionCurso" min="1" placeholder="Ej. 20" required />
+          </label>
+          <label>
+            Vigencia en meses
+            <input type="number" id="vigenciaCurso" min="1" placeholder="Ej. 12" required />
+          </label>
+          <label>
+            Descripcion
+            <textarea id="descripcionCurso" rows="3" placeholder="Descripcion breve del curso"></textarea>
+          </label>
+          <button type="submit">Guardar curso</button>
+        </form>
+      </article>
+
+      <article class="panel wide-panel">
+        <h2>Asignar curso</h2>
+        <form id="formAsignacion" class="form assignment-form">
+          <label>
+            Usuario
+            <select id="usuarioAsignacion" required></select>
+          </label>
+          <label>
+            Curso
+            <select id="cursoAsignacion" required></select>
+          </label>
+          <label>
+            Fecha limite
+            <input type="date" id="fechaLimiteAsignacion" required />
+          </label>
+          <button type="submit">Asignar curso</button>
+        </form>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="section-header">
+        <div>
+          <h2>Seguimiento de asignaciones</h2>
+          <p>Revise estados, vencimientos y cumplimiento por usuario.</p>
+        </div>
+        <div class="filters">
+          <select id="filtroEstado" aria-label="Filtrar por estado">
+            <option value="todos">Todos los estados</option>
+            <option value="pendiente">Pendiente</option>
+            <option value="en_proceso">En proceso</option>
+            <option value="aprobado">Aprobado</option>
+            <option value="vencido">Vencido</option>
+          </select>
+          <button type="button" id="btnRestablecer">Restablecer datos</button>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Curso</th>
+              <th>Fecha limite</th>
+              <th>Estado</th>
+              <th>Alerta</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tablaAsignaciones"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Cumplimiento por usuario</h2>
+      <div id="cumplimientoUsuarios" class="progress-list"></div>
+    </section>
+  </main>
+
+  <template id="emptyStateTemplate">
+    <tr>
+      <td colspan="6" class="empty-state">No hay asignaciones registradas para el filtro seleccionado.</td>
+    </tr>
+  </template>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
