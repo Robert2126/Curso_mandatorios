@@ -1,0 +1,2 @@
+id_curso,id_tema,dificultad,enunciado,opcion_a,opcion_b,opcion_c,opcion_d,respuesta_correcta,retroalimentacion,estado
+CUR-002,TEM-002,Media,"Que principio exige adecuar la respuesta al nivel de riesgo?",Proporcionalidad,Publicidad,Jerarquia,Celeridad,A,"La proporcionalidad exige correspondencia entre el riesgo identificado y la respuesta aplicada.",Activa
