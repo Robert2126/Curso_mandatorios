@@ -50,6 +50,10 @@ export function verifySessionToken(token: string): SessionPayload | null {
 
   const expectedSignature = sign(encodedPayload);
 
+  if (signature.length !== expectedSignature.length) {
+    return null;
+  }
+
   if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))) {
     return null;
   }
