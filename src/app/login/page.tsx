@@ -1,4 +1,13 @@
-export default function LoginPage() {
+type LoginPageProps = {
+  searchParams?: Promise<{
+    error?: string;
+  }>;
+};
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const params = searchParams ? await searchParams : undefined;
+  const error = params?.error;
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-surface px-4 py-10">
       <section className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
@@ -8,7 +17,13 @@ export default function LoginPage() {
           <p className="mt-2 text-sm text-slate-500">Herramienta personal de preparacion y autoevaluacion.</p>
         </div>
 
-        <form className="space-y-5">
+        {error ? (
+          <div className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            No fue posible iniciar sesion. Verifica la cedula y la contrasena.
+          </div>
+        ) : null}
+
+        <form className="space-y-5" action="/api/auth/login" method="post">
           <div>
             <label className="text-sm font-medium text-slate-700" htmlFor="cedula">
               Cedula
@@ -17,6 +32,8 @@ export default function LoginPage() {
               id="cedula"
               name="cedula"
               type="text"
+              required
+              autoComplete="username"
               className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-secondary"
               placeholder="Numero de cedula"
             />
@@ -30,13 +47,15 @@ export default function LoginPage() {
               id="password"
               name="password"
               type="password"
+              required
+              autoComplete="current-password"
               className="mt-2 w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-secondary"
               placeholder="Contrasena"
             />
           </div>
 
           <button
-            type="button"
+            type="submit"
             className="w-full rounded-xl bg-primary px-4 py-3 font-semibold text-white transition hover:bg-secondary"
           >
             Ingresar
