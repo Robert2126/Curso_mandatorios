@@ -27,6 +27,16 @@ export async function getAdminTopics() {
   });
 }
 
+export async function getAdminResources() {
+  return prisma.resource.findMany({
+    include: {
+      course: true,
+      topic: true,
+    },
+    orderBy: { order: "asc" },
+  });
+}
+
 export async function getAdminQuestions() {
   return prisma.question.findMany({
     include: {
