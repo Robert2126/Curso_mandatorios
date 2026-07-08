@@ -1,0 +1,11 @@
+batch,questionRange,sourceCsv,sourceDoc,questionCount,validationStatus,importableNow,mainValidationFocus
+01,1-10,content/matriz_revision_preguntas_lote_01.csv,docs/19_question_bank_batch_01.md,10,PENDIENTE_VALIDACION,false,"Normativa inicial y consistencia de respuestas propuestas"
+02,11-20,content/matriz_revision_preguntas_lote_02.csv,docs/20_question_bank_batch_02.md,10,PENDIENTE_VALIDACION,false,"Reglas operativas y preguntas con soporte institucional pendiente"
+03,21-30,content/matriz_revision_preguntas_lote_03.csv,docs/21_question_bank_batch_03.md,10,PENDIENTE_VALIDACION,false,"Uniformes, presentacion personal y elementos del servicio"
+04,31-40,content/matriz_revision_preguntas_lote_04.csv,docs/22_question_bank_batch_04.md,10,PENDIENTE_VALIDACION,false,"Patrullaje, cinturon multiproposito, convivencia y categorias juridicas"
+05,41-50,content/matriz_revision_preguntas_lote_05.csv,docs/23_question_bank_batch_05.md,10,PENDIENTE_VALIDACION,false,"Medidas correctivas, objeto y finalidades de la Ley 1801"
+06,51-60,content/matriz_revision_preguntas_lote_06.csv,docs/24_question_bank_batch_06.md,10,PENDIENTE_VALIDACION,false,"Medios de policia, principios, actividad de policia y mediacion policial"
+07,61-70,content/matriz_revision_preguntas_lote_07.csv,docs/25_question_bank_batch_07.md,10,PENDIENTE_VALIDACION,false,"Tecnicas de mediacion, ruta VBG, denuncia y actos urgentes"
+08,71-80,content/matriz_revision_preguntas_lote_08.csv,docs/26_question_bank_batch_08.md,10,PENDIENTE_VALIDACION,false,"Ruta VBG, medidas de proteccion, infancia y adolescencia"
+09,81-90,content/matriz_revision_preguntas_lote_09.csv,docs/27_question_bank_batch_09.md,10,PENDIENTE_VALIDACION,false,"NNA, establecimientos educativos, extranjeros, documentos y visas"
+10,91-100,content/matriz_revision_preguntas_lote_10.csv,docs/28_question_bank_batch_10.md,10,PENDIENTE_VALIDACION,false,"Migracion, inmunidad diplomatica, funcion de policia y uso de la fuerza"
